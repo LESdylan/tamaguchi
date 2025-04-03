@@ -601,9 +601,6 @@ const die = () => {
     achievementDisplay.classList.add('hidden');
   }
   
-  // Ensure the game over screen is visible
-  elements.screens.gameOverScreen.classList.remove('hidden');
-  
   // Set the final information
   elements.displays.nameGameOverDisplay.textContent = myTama.name;
   elements.displays.lifeDurationGameOverDisplay.textContent = myTama.lifeDuration;
@@ -618,31 +615,11 @@ const die = () => {
   if (finalScoreElement) finalScoreElement.textContent = finalScore;
   if (finalStageElement) finalStageElement.textContent = finalStage;
   
-  // Directly set up a fresh event listener for the restart button
-  const restartButton = document.getElementById('restart-button');
-  if (restartButton) {
-    // Remove existing listeners to prevent duplicates
-    const newButton = restartButton.cloneNode(true);
-    restartButton.parentNode.replaceChild(newButton, restartButton);
-    
-    // Add the fresh event listener
-    newButton.addEventListener('click', function(event) {
-      // Stop propagation to prevent other handlers from interfering
-      event.stopPropagation();
-      
-      // Hide game over screen
-      elements.screens.gameOverScreen.classList.add('hidden');
-      
-      // Play sound
-      sound.play('sound-click');
-      
-      // Reset the game
-      resetGame();
-      
-      // Start a new game
-      start();
-    });
-  }
+  // Ensure the game over screen is visible
+  elements.screens.gameOverScreen.classList.remove('hidden');
+  
+  // Set up fresh event listeners for game over buttons
+  setupGameOverButtons();
   
   showNotification(`${myTama.name} n'est plus parmi nous... 👻`, true);
   
@@ -651,22 +628,88 @@ const die = () => {
   clearInterval(intervalLifeDuration);
 };
 
-// Helper function to get stage name
-const getStageName = (stage) => {
-  switch(stage) {
-    case CONFIG.EVOLUTION_STAGES.BABY:
-      return 'Bébé';
-    case CONFIG.EVOLUTION_STAGES.CHILD:
-      return 'Poussin';
-    case CONFIG.EVOLUTION_STAGES.TEEN:
-      return 'Caneton';
-    case CONFIG.EVOLUTION_STAGES.ADULT:
-      return 'Adulte';
-    case CONFIG.EVOLUTION_STAGES.SPECIAL:
-      return 'Forme Spéciale';
-    default:
-      return 'Œuf';
+// Function to set up game over buttons
+const setupGameOverButtons = () => {
+  // Handle Restart button
+  const restartButton = document.getElementById('restart-button');
+  if (restartButton) {
+    // Remove existing event listeners to avoid duplicates
+    const newRestartButton = restartButton.cloneNode(true);
+    restartButton.parentNode.replaceChild(newRestartButton, restartButton);
+    
+    newRestartButton.addEventListener('click', function() {
+      console.log('Restart button clicked');
+      // Hide game over screen
+      elements.screens.gameOverScreen.classList.add('hidden');
+      // Play sound
+      sound.play('sound-click');
+      // Reset game
+      resetGame();
+      // Start new game
+      start();
+    });
   }
+  
+  // Handle Share button
+  const shareButton = document.getElementById('share-button');
+  if (shareButton) {
+    // Remove existing event listeners to avoid duplicates
+    const newShareButton = shareButton.cloneNode(true);
+    shareButton.parentNode.replaceChild(newShareButton, shareButton);
+    
+    newShareButton.addEventListener('click', function() {
+      console.log('Share button clicked');
+      // Implement share functionality
+      shareScore();
+      sound.play('sound-click');
+    });
+  }
+};
+
+// Share score functionality
+const shareScore = () => {
+  const score = document.querySelector('.js-final-score').textContent;
+  const stage = document.querySelector('.js-final-stage').textContent;
+  const message = `J'ai joué à Tamastudi et mon ${myTama.name} a atteint le niveau ${stage} avec un score de ${score} points! 🎮`;
+  
+  // Check if Web Share API is available
+  if (navigator.share) {
+    navigator.share({
+      title: 'Mon score Tamastudi',
+      text: message,
+      url: window.location.href
+    })
+    .then(() => showNotification('Score partagé avec succès!'))
+    .catch(error => {
+      console.error('Erreur de partage:', error);
+      showNotification('Erreur lors du partage', true);
+      // Fallback to clipboard
+      copyToClipboard(message);
+    });
+  } else {
+    // Fallback for browsers that don't support the Web Share API
+    copyToClipboard(message);
+  }
+};
+
+// Helper function to copy text to clipboard
+const copyToClipboard = (text) => {
+  // Create a temporary textarea element
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.setAttribute('readonly', '');
+  textarea.style.position = 'absolute';
+  textarea.style.left = '-9999px';
+  document.body.appendChild(textarea);
+  
+  // Select and copy the text
+  textarea.select();
+  document.execCommand('copy');
+  
+  // Remove the temporary element
+  document.body.removeChild(textarea);
+  
+  showNotification('Score copié dans le presse-papier!');
 };
 
 /* SAUVEGARDE ET CHARGEMENT */
@@ -918,6 +961,9 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
+  
+  // Set up game over buttons when the page loads
+  setupGameOverButtons();
 });
 
 // Start with the egg design

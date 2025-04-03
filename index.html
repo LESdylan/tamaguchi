@@ -81,96 +81,97 @@
           <p>Score final: <span class="js-final-score">0</span> points</p>
           <p>Niveau atteint: <span class="js-final-stage">Bébé</span></p>
         </div>
-        <div class="achievement-unlocked js-achievement-display hidden">it non-blocking -->
-          <span class="trophy">🏆</span> js-achievement-display hidden">
+        <div class="achievement-unlocked js-achievement-display hidden">
+          <span class="trophy">🏆</span>
           <span class="achievement-text">Succès débloqué: <span class="js-achievement-name"></span></span>
-        </div>n class="achievement-text">Succès débloqué: <span class="js-achievement-name"></span></span>
-        <button class="overlay__button js-restart-button">Recommencer</button>
-        <button class="overlay__button secondary js-share-button">Partager mon score</button>
-      </div> class="game-over-buttons">
-    </div><button class="overlay__button js-restart-button" id="restart-button">Recommencer</button>
-          <button class="overlay__button secondary js-share-button">Partager mon score</button>
+          <button class="achievement-close">×</button>
+        </div>
+        <div class="game-over-buttons">
+          <button class="overlay__button js-restart-button" id="restart-button">Recommencer</button>
+          <button class="overlay__button secondary js-share-button" id="share-button">Partager mon score</button>
+        </div>
+      </div>
+    </div>
+    
     <!-- Achievements Panel -->
     <div class="side-panel js-achievements-panel hidden">
       <div class="panel-header">
         <h2>Succès <span class="js-achievements-count">0/12</span></h2>
         <button class="close-panel js-close-achievements">×</button>
-      </div>ss="side-panel js-achievements-panel hidden">
+      </div>
       <div class="panel-content">
-        <ul class="achievements-list js-achievements-list"></span></h2>
-          <!-- Will be populated by JavaScript -->ements">×</button>
-        </ul>
-      </div>lass="panel-content">
-    </div>l class="achievements-list js-achievements-list">
+        <ul class="achievements-list js-achievements-list">
           <!-- Will be populated by JavaScript -->
+        </ul>
+      </div>
+    </div>
+    
     <!-- Customization Panel -->
     <div class="side-panel js-customize-panel hidden">
       <div class="panel-header">
         <h2>Personnalisation</h2>
         <button class="close-panel js-close-customize">×</button>
-      </div>ss="side-panel js-customize-panel hidden">
+      </div>
       <div class="panel-content">
         <h3>Thèmes de couleur</h3>
-        <div class="color-themes"> js-close-customize">×</button>
+        <div class="color-themes">
           <button class="theme-button" data-theme="default">Défaut</button>
           <button class="theme-button" data-theme="pastel">Pastel</button>
           <button class="theme-button" data-theme="dark">Sombre</button>
           <button class="theme-button" data-theme="retro">Rétro</button>
-        </div>ton class="theme-button" data-theme="default">Défaut</button>
-          <button class="theme-button" data-theme="pastel">Pastel</button>
-        <h3>Arrière-plans</h3>-button" data-theme="dark">Sombre</button>
-        <div class="backgrounds">tton" data-theme="retro">Rétro</button>
+        </div>
+        <h3>Arrière-plans</h3>
+        <div class="backgrounds">
           <button class="bg-button" data-bg="default">Défaut</button>
           <button class="bg-button" data-bg="stars">Étoiles</button>
           <button class="bg-button" data-bg="forest">Forêt</button>
           <button class="bg-button" data-bg="ocean">Océan</button>
-        </div>ton class="bg-button" data-bg="default">Défaut</button>
-          <button class="bg-button" data-bg="stars">Étoiles</button>
-        <h3>Accessoires</h3>button" data-bg="forest">Forêt</button>
-        <div class="accessories js-accessories">an">Océan</button>
+        </div>
+        <h3>Accessoires</h3>
+        <div class="accessories js-accessories">
           <!-- Will be populated by JavaScript -->
         </div>
-      </div>Accessoires</h3>
-    </div>iv class="accessories js-accessories">
-          <!-- Will be populated by JavaScript -->
+      </div>
+    </div>
+    
     <!-- Mini-games Panel -->
     <div class="side-panel js-minigames-panel hidden">
       <div class="panel-header">
         <h2>Mini-jeux</h2>
         <button class="close-panel js-close-minigames">×</button>
-      </div>ss="side-panel js-minigames-panel hidden">
+      </div>
       <div class="panel-content">
         <div class="minigames-grid">
-          <div class="minigame-card active" data-game="memory">n>
+          <div class="minigame-card active" data-game="memory">
             <div class="minigame-icon">🎮</div>
-            <h3>Memory</h3>tent">
+            <h3>Memory</h3>
             <p>Retrouvez les paires</p>
             <button class="minigame-button js-play-memory">Jouer</button>
-          </div> class="minigame-icon">🎮</div>
+          </div>
           <div class="minigame-card" data-game="quiz">
             <div class="minigame-icon">❓</div>
-            <h3>Quiz</h3>="minigame-button js-play-memory">Jouer</button>
+            <h3>Quiz</h3>
             <p>Questions animaux</p>
             <button class="minigame-button js-play-quiz">Jouer</button>
-          </div> class="minigame-icon">❓</div>
+          </div>
           <div class="minigame-card locked" data-game="catchfood">
             <div class="minigame-icon">🍎</div>
-            <h3>Attrape Nourriture</h3>ton js-play-quiz">Jouer</button>
+            <h3>Attrape Nourriture</h3>
             <p>(Niveau Adulte)</p>
             <button class="minigame-button js-play-catchfood" disabled>Verrouillé</button>
-          </div> class="minigame-icon">🍎</div>
-        </div>3>Attrape Nourriture</h3>
-      </div><p>(Niveau Adulte)</p>
-    </div>  <button class="minigame-button js-play-catchfood" disabled>Verrouillé</button>
           </div>
+        </div>
+      </div>
+    </div>
+    
     <!-- Notification System -->
     <div class="notification hidden js-notification">
       <div class="notification__icon"></div>
       <p class="notification__text"></p>
-    </div>otification System -->
-    <div class="notification hidden js-notification">
-    <!-- Main Game Layout -->n__icon"></div>
-    <div class="game-container">xt"></p>
+    </div>
+    
+    <!-- Main Game Layout -->
+    <div class="game-container">
       <!-- Tamastudi Device -->
       <div class="tamastudi">
         <div class="tamastudi__container">
@@ -184,26 +185,26 @@
               <li class="tamastudi__actions js-button-action" data-desire="clean">🚽</li>
               <li class="tamastudi__actions js-button-action" data-desire="pet">🧸</li>
               <li class="tamastudi__actions js-button-action" data-desire="medicine">💊</li>
-            </ul> class="tamastudi__actions js-button-action" data-desire="play">🎳</li>
-            <div class="tamastudi__accessory js-accessory"></div>a-desire="clean">🚽</li>
-            <div class="tamastudi__desire js-desire"></div>n" data-desire="pet">🧸</li>
-            <div class="tamastudi__character js-character">n" data-desire="medicine">💊</li>
+            </ul>
+            <div class="tamastudi__accessory js-accessory"></div>
+            <div class="tamastudi__desire js-desire"></div>
+            <div class="tamastudi__character js-character">
               <div class="egg-character">
-                <div class="egg-top"></div>y js-accessory"></div>
-                <div class="egg-bottom"></div>esire"></div>
-              </div>ss="tamastudi__character js-character">
-            </div> class="egg-character">
+                <div class="egg-top"></div>
+                <div class="egg-bottom"></div>
+              </div>
+            </div>
             <div class="tamastudi__background js-tama-bg"></div>
             <div class="tamastudi__effects js-effects"></div>
-          </div>div>
+          </div>
           <div class="tamastudi__container-buttons">
             <button class="tamastudi__button js-button" data-direction="left"></button>
             <button class="tamastudi__button js-button" data-direction="center"></button>
             <button class="tamastudi__button js-button" data-direction="right"></button>
-          </div>lass="tamastudi__container-buttons">
-        </div>utton class="tamastudi__button js-button" data-direction="left"></button>
-      </div><button class="tamastudi__button js-button" data-direction="center"></button>
-            <button class="tamastudi__button js-button" data-direction="right"></button>
+          </div>
+        </div>
+      </div>
+      
       <!-- Stats Panel -->
       <div class="vitals hidden js-vitals">
         <div class="vitals__header">
@@ -211,124 +212,117 @@
           <div class="level-indicator">
             <span class="level-label">Niveau:</span>
             <span class="level-value js-level">Œuf</span>
-          </div>ass="vitals__title"><span class="js-tamaName"></span></h2>
-        </div> class="level-indicator">
-            <span class="level-label">Niveau:</span>
-        <ul class="vitals__list">lue js-level">Œuf</span>
+          </div>
+        </div>
+        <ul class="vitals__list">
           <li class="vitals__item">
             <div class="vitals__icon">🍗</div>
             <div class="vitals__info">
               <div class="vitals__bar-container">
                 <div class="vitals__bar">
                   <div class="vitals__progress js-progress--eat" style="width: 0%"></div>
-                </div>="vitals__info">
+                </div>
                 <p class="vitals__number"><span class="js-score--eat">0</span><span class="vitals__mention">/ 5</span></p>
-              </div> class="vitals__bar">
-            </div><div class="vitals__progress js-progress--eat" style="width: 0%"></div>
-          </li> </div>
-          <li class="vitals__item">umber"><span class="js-score--eat">0</span><span class="vitals__mention">/ 5</span></p>
+              </div>
+            </div>
+          </li>
+          <li class="vitals__item">
             <div class="vitals__icon">🎮</div>
             <div class="vitals__info">
               <div class="vitals__bar-container">
                 <div class="vitals__bar">
                   <div class="vitals__progress js-progress--play" style="width: 0%"></div>
-                </div>="vitals__info">
+                </div>
                 <p class="vitals__number"><span class="js-score--play">0</span><span class="vitals__mention">/ 5</span></p>
-              </div> class="vitals__bar">
-            </div><div class="vitals__progress js-progress--play" style="width: 0%"></div>
-          </li> </div>
-          <li class="vitals__item">umber"><span class="js-score--play">0</span><span class="vitals__mention">/ 5</span></p>
+              </div>
+            </div>
+          </li>
+          <li class="vitals__item">
             <div class="vitals__icon">🧼</div>
             <div class="vitals__info">
               <div class="vitals__bar-container">
                 <div class="vitals__bar">
                   <div class="vitals__progress js-progress--clean" style="width: 0%"></div>
-                </div>="vitals__info">
+                </div>
                 <p class="vitals__number"><span class="js-score--clean">0</span><span class="vitals__mention">/ 5</span></p>
-              </div> class="vitals__bar">
-            </div><div class="vitals__progress js-progress--clean" style="width: 0%"></div>
-          </li> </div>
-          <li class="vitals__item">umber"><span class="js-score--clean">0</span><span class="vitals__mention">/ 5</span></p>
+              </div>
+            </div>
+          </li>
+          <li class="vitals__item">
             <div class="vitals__icon">😊</div>
             <div class="vitals__info">
               <div class="vitals__bar-container">
                 <div class="vitals__bar">
                   <div class="vitals__progress js-progress--mood" style="width: 0%"></div>
-                </div>="vitals__info">
+                </div>
                 <p class="vitals__number"><span class="js-mood">0</span><span class="vitals__mention">/ 5</span></p>
-              </div> class="vitals__bar">
-            </div><div class="vitals__progress js-progress--mood" style="width: 0%"></div>
-          </li> </div>
-        </ul>   <p class="vitals__number"><span class="js-mood">0</span><span class="vitals__mention">/ 5</span></p>
               </div>
+            </div>
+          </li>
+        </ul>
         <div class="vitals__extra">
           <div class="vitals__extra-item">
             <p class="vitals__subtitle">Durée de vie: <span class="js-life-duration">0</span> min</p>
           </div>
           <div class="vitals__extra-item">
             <p class="vitals__subtitle">Score: <span class="js-score">0</span> pts</p>
-          </div>lass="vitals__subtitle">Durée de vie: <span class="js-life-duration">0</span> min</p>
-        </div>v>
-          <div class="vitals__extra-item">
-        <div class="vitals__controls">">Score: <span class="js-score">0</span> pts</p>
+          </div>
+        </div>
+        <div class="vitals__controls">
           <button class="vitals__control-btn js-save-game">
             <span class="btn-icon">💾</span>
           </button>
           <button class="vitals__control-btn js-load-game">
-            <span class="btn-icon">📂</span> js-save-game">
-          </button>lass="btn-icon">💾</span>
-          <button class="vitals__control-btn js-toggle-mode">
-            <span class="btn-icon">☀️</span> js-load-game">
-          </button>lass="btn-icon">📂</span>
-          <button class="vitals__control-btn js-show-achievements">
-            <span class="btn-icon">🏆</span> js-toggle-mode">
-          </button>lass="btn-icon">☀️</span>
-          <button class="vitals__control-btn js-show-customize">
-            <span class="btn-icon">🎨</span> js-show-achievements">
-          </button>lass="btn-icon">🏆</span>
-          <button class="vitals__control-btn js-show-minigames">
-            <span class="btn-icon">🎲</span> js-show-customize">
-          </button>lass="btn-icon">🎨</span>
-        </div>tton>
-      </div>utton class="vitals__control-btn js-show-minigames">
-    </div>  <span class="btn-icon">🎲</span>
+            <span class="btn-icon">📂</span>
           </button>
+          <button class="vitals__control-btn js-toggle-mode">
+            <span class="btn-icon">☀️</span>
+          </button>
+          <button class="vitals__control-btn js-show-achievements">
+            <span class="btn-icon">🏆</span>
+          </button>
+          <button class="vitals__control-btn js-show-customize">
+            <span class="btn-icon">🎨</span>
+          </button>
+          <button class="vitals__control-btn js-show-minigames">
+            <span class="btn-icon">🎲</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    
     <!-- Mini-game Modal -->
     <div class="modal js-minigame-modal hidden">
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="js-minigame-title">Titre du Mini-jeu</h2>
           <button class="close-modal js-close-minigame-modal">×</button>
-        </div>ss="modal-content">
+        </div>
         <div class="modal-body js-minigame-container">
-          <!-- Mini-game content will be injected here -->/h2>
-        </div>ton class="close-modal js-close-minigame-modal">×</button>
-      </div>v>
-    </div>iv class="modal-body js-minigame-container">
           <!-- Mini-game content will be injected here -->
+        </div>
+      </div>
+    </div>
+    
     <!-- Audio elements -->
     <audio id="sound-click" src="sounds/click.mp3" preload="auto"></audio>
     <audio id="sound-birth" src="sounds/birth.mp3" preload="auto"></audio>
     <audio id="sound-eat" src="sounds/eat.mp3" preload="auto"></audio>
     <audio id="sound-play" src="sounds/play.mp3" preload="auto"></audio>
     <audio id="sound-clean" src="sounds/clean.mp3" preload="auto"></audio>
-    <audio id="sound-pet" src="sounds/pet.mp3" preload="auto"></audio>dio>
+    <audio id="sound-pet" src="sounds/pet.mp3" preload="auto"></audio>
     <audio id="sound-error" src="sounds/error.mp3" preload="auto"></audio>
     <audio id="sound-death" src="sounds/death.mp3" preload="auto"></audio>
     <audio id="sound-achievement" src="sounds/achievement.mp3" preload="auto"></audio>
     <audio id="sound-evolve" src="sounds/evolve.mp3" preload="auto"></audio>
     <audio id="sound-medicine" src="sounds/medicine.mp3" preload="auto"></audio>
     <audio id="background-music" src="sounds/background.mp3" preload="auto" loop></audio>
-    <audio id="sound-achievement" src="sounds/achievement.mp3" preload="auto"></audio>
-    <!-- Scripts -->-evolve" src="sounds/evolve.mp3" preload="auto"></audio>
-    <script src="reset-handler.js"></script>/medicine.mp3" preload="auto"></audio>
-    <script src="memory-game.js"></script>s/background.mp3" preload="auto" loop></audio>
+    
+    <!-- Scripts -->
+    <script src="reset-handler.js"></script>
+    <script src="memory-game.js"></script>
     <script src="achievements.js"></script>
     <script src="minigames.js"></script>
-    <script src="script.js"></script>pt src="memory-game.js"></script>
-  </body>ript src="achievements.js"></script>
-</html>    <script src="minigames.js"></script>
-
     <script src="script.js"></script>
   </body>
 </html>

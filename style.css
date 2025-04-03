@@ -60,6 +60,8 @@ body.night-mode {
     width: 500px;
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
     animation: fadeIn 0.5s ease-out;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .overlay__title {
@@ -94,7 +96,7 @@ body.night-mode {
     margin-top: 10px;
     transition: transform 0.2s, background-color 0.2s;
     position: relative;
-    z-index: 10;
+    z-index: 1000;
     pointer-events: auto;
     cursor: pointer;
 }
@@ -106,6 +108,15 @@ body.night-mode {
 
 .overlay__button:active {
     transform: scale(0.95);
+}
+
+.overlay__button.secondary {
+    background-color: #3a86ff;
+    color: white;
+}
+
+.overlay__button.secondary:hover {
+    background-color: #2a76ef;
 }
 
 .overlay__options {
