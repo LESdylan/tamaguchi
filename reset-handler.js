@@ -5,6 +5,8 @@
 
 // Detect if there is an ongoing issue with the game getting stuck
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('Reset handler initialized');
+    
     // Add an emergency reset button that's always available
     const emergencyResetBtn = document.createElement('button');
     emergencyResetBtn.textContent = 'Reset Game';
@@ -38,39 +40,83 @@ document.addEventListener('DOMContentLoaded', function() {
     // Emergency reset logic
     emergencyResetBtn.addEventListener('click', function() {
         console.log('Emergency reset clicked');
-        
-        // Clear all overlays
-        document.querySelectorAll('.overlay').forEach(overlay => {
-            overlay.classList.add('hidden');
-        });
+        forceResetGame();
+    });
+    
+    document.body.appendChild(emergencyResetBtn);
+    
+    // Global force reset function that can be used from anywhere
+    window.forceResetGame = function() {
+        console.log('Forcing game reset...');
         
         // Clean localStorage
         localStorage.removeItem('tamastudi_save');
         localStorage.removeItem('tamastudi_achievements');
         
+        // Clear all overlays
+        document.querySelectorAll('.overlay').forEach(overlay => {
+            console.log('Hiding overlay:', overlay.className);
+            overlay.classList.add('hidden');
+        });
+        
         // Force page reload
+        console.log('Reloading page...');
         window.location.reload();
+    };
+    
+    // Monkey patch the restart button with a direct solution
+    const patchGameOverButtons = function() {
+        console.log('Patching game over buttons');
+        
+        // Handle restart button
+        const restartButton = document.getElementById('restart-button');
+        if (restartButton) {
+            restartButton.addEventListener('click', function(event) {
+                console.log('Restart button clicked from reset handler patch');
+                event.preventDefault();
+                event.stopPropagation();
+                
+                // Force reset the game
+                forceResetGame();
+            }, true);
+        }
+        
+        // Also patch any js-restart-button class elements
+        const restartButtons = document.querySelectorAll('.js-restart-button');
+        restartButtons.forEach(button => {
+            button.addEventListener('click', function(event) {
+                console.log('js-restart-button clicked from reset handler patch');
+                event.preventDefault();
+                event.stopPropagation();
+                
+                // Force reset the game
+                forceResetGame();
+            }, true);
+        });
+    };
+    
+    // Try to patch immediately
+    patchGameOverButtons();
+    
+    // Also patch after a delay to catch late-rendered buttons
+    setTimeout(patchGameOverButtons, 1000);
+    setTimeout(patchGameOverButtons, 2000);
+    
+    // Monitor for game over screen appearance
+    const gameOverObserver = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'attributes' && 
+                mutation.attributeName === 'class' &&
+                !mutation.target.classList.contains('hidden')) {
+                    
+                console.log('Game over screen appeared, patching buttons');
+                patchGameOverButtons();
+            }
+        });
     });
     
-    document.body.appendChild(emergencyResetBtn);
-    
-    // Add a click counter to the document for debugging purposes
-    document.addEventListener('click', function(e) {
-        const target = e.target;
-        console.log('Click detected on:', target.tagName, target.className, target.id);
-        
-        if (target.id === 'restart-button' || target.classList.contains('js-restart-button')) {
-            console.log('Restart button clicked from reset-handler');
-            e.stopPropagation();
-            
-            // Hide game over screen
-            const gameOverScreen = document.querySelector('.js-game-over');
-            if (gameOverScreen) {
-                gameOverScreen.classList.add('hidden');
-            }
-            
-            // Hard page reload as a fallback
-            window.location.reload();
-        }
-    }, true);
+    const gameOverScreen = document.querySelector('.js-game-over');
+    if (gameOverScreen) {
+        gameOverObserver.observe(gameOverScreen, { attributes: true });
+    }
 });

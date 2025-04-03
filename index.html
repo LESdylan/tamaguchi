@@ -90,6 +90,11 @@
           <button class="overlay__button js-restart-button" id="restart-button">Recommencer</button>
           <button class="overlay__button secondary js-share-button" id="share-button">Partager mon score</button>
         </div>
+        <!-- Add a fallback reset button that uses window.location.reload directly -->
+        <div class="fallback-reset">
+          <p>Si le bouton Recommencer ne fonctionne pas :</p>
+          <button class="overlay__button warning" id="force-reset" onclick="window.location.reload();">Réinitialiser le jeu</button>
+        </div>
       </div>
     </div>
     

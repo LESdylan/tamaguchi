@@ -169,6 +169,8 @@ const initGame = () => {
 
 /* PHASE 0 : activer le tamastudi */
 const start = () => {
+  console.log('Starting game...');
+  
   let count = 0;
   
   // First remove any existing click listeners on the center button to prevent duplicates
@@ -176,6 +178,9 @@ const start = () => {
   const newCenterButton = centerButton.cloneNode(true);
   centerButton.parentNode.replaceChild(newCenterButton, centerButton);
   elements.buttons.buttonCenter = newCenterButton;
+  
+  // Ensure the game over screen is hidden
+  elements.screens.gameOverScreen.classList.add('hidden');
   
   elements.buttons.buttonCenter.addEventListener("click", () => {
     sound.play('sound-click');
@@ -591,9 +596,21 @@ const toggleDayNightMode = () => {
 
 /* MORT */
 const die = () => {
+  console.log('Game over triggered');
+  
+  if (!myTama.alive) {
+    console.log('Tama already dead, preventing double game over');
+    return; // Prevent multiple calls
+  }
+  
   myTama.alive = false;
   showInScreen("👻");
   sound.play('sound-death');
+  
+  // Clear all intervals to prevent further state changes
+  clearTimeout(timeoutWaitForAction);
+  clearInterval(intervalLifeDuration);
+  clearInterval(dayNightCycleInterval);
   
   // Hide any achievement displays that might be visible
   const achievementDisplay = document.querySelector('.js-achievement-display');
@@ -615,21 +632,19 @@ const die = () => {
   if (finalScoreElement) finalScoreElement.textContent = finalScore;
   if (finalStageElement) finalStageElement.textContent = finalStage;
   
-  // Ensure the game over screen is visible
-  elements.screens.gameOverScreen.classList.remove('hidden');
-  
-  // Set up fresh event listeners for game over buttons
+  // Set up fresh event listeners for game over buttons before showing the screen
   setupGameOverButtons();
   
-  showNotification(`${myTama.name} n'est plus parmi nous... 👻`, true);
+  // Ensure the game over screen is visible (after buttons are set up)
+  elements.screens.gameOverScreen.classList.remove('hidden');
   
-  // Arrêter tous les intervalles et timeouts
-  clearTimeout(timeoutWaitForAction);
-  clearInterval(intervalLifeDuration);
+  showNotification(`${myTama.name} n'est plus parmi nous... 👻`, true);
 };
 
-// Function to set up game over buttons
+// Function to set up game over buttons with direct force reset
 const setupGameOverButtons = () => {
+  console.log('Setting up game over buttons');
+  
   // Handle Restart button
   const restartButton = document.getElementById('restart-button');
   if (restartButton) {
@@ -637,79 +652,96 @@ const setupGameOverButtons = () => {
     const newRestartButton = restartButton.cloneNode(true);
     restartButton.parentNode.replaceChild(newRestartButton, restartButton);
     
-    newRestartButton.addEventListener('click', function() {
-      console.log('Restart button clicked');
+    newRestartButton.addEventListener('click', function(event) {
+      console.log('Restart button clicked in setupGameOverButtons');
+      event.stopPropagation();
+      
       // Hide game over screen
       elements.screens.gameOverScreen.classList.add('hidden');
+      
       // Play sound
       sound.play('sound-click');
-      // Reset game
-      resetGame();
-      // Start new game
-      start();
+      
+      // Hard reset: use window.location.reload() instead of soft reset
+      window.location.reload();
     });
+  } else {
+    console.warn('Restart button not found in setupGameOverButtons');
   }
   
-  // Handle Share button
+  // Similar approach for Share button
   const shareButton = document.getElementById('share-button');
   if (shareButton) {
-    // Remove existing event listeners to avoid duplicates
     const newShareButton = shareButton.cloneNode(true);
     shareButton.parentNode.replaceChild(newShareButton, shareButton);
     
-    newShareButton.addEventListener('click', function() {
+    newShareButton.addEventListener('click', function(event) {
+      event.stopPropagation();
       console.log('Share button clicked');
+      
       // Implement share functionality
       shareScore();
       sound.play('sound-click');
     });
-  }
-};
-
-// Share score functionality
-const shareScore = () => {
-  const score = document.querySelector('.js-final-score').textContent;
-  const stage = document.querySelector('.js-final-stage').textContent;
-  const message = `J'ai joué à Tamastudi et mon ${myTama.name} a atteint le niveau ${stage} avec un score de ${score} points! 🎮`;
-  
-  // Check if Web Share API is available
-  if (navigator.share) {
-    navigator.share({
-      title: 'Mon score Tamastudi',
-      text: message,
-      url: window.location.href
-    })
-    .then(() => showNotification('Score partagé avec succès!'))
-    .catch(error => {
-      console.error('Erreur de partage:', error);
-      showNotification('Erreur lors du partage', true);
-      // Fallback to clipboard
-      copyToClipboard(message);
-    });
   } else {
-    // Fallback for browsers that don't support the Web Share API
-    copyToClipboard(message);
+    console.warn('Share button not found');
   }
 };
 
-// Helper function to copy text to clipboard
-const copyToClipboard = (text) => {
-  // Create a temporary textarea element
-  const textarea = document.createElement('textarea');
-  textarea.value = text;
-  textarea.setAttribute('readonly', '');
-  textarea.style.position = 'absolute';
-  textarea.style.left = '-9999px';
-  document.body.appendChild(textarea);
+/* RESET GAME */
+const resetGame = () => {
+  console.log('Resetting game...');
   
-  // Select and copy the text
-  textarea.select();
-  document.execCommand('copy');
+  // Reset all timers
+  clearTimeout(timeoutWaitForAction);
+  clearInterval(intervalLifeDuration);
+  clearInterval(dayNightCycleInterval);  // Also clear day/night cycle
   
-  // Remove the temporary element
-  document.body.removeChild(textarea);
+  // Reset Tama state
+  myTama.name = "";
+  myTama.alive = false;  // We'll set this to true when the egg hatches
+  myTama.stage = CONFIG.EVOLUTION_STAGES.EGG;
+  myTama.fed = CONFIG.DEFAULT_SCORE;
+  myTama.playfull = CONFIG.DEFAULT_SCORE;
+  myTama.cleaned = CONFIG.DEFAULT_SCORE;
+  myTama.lifeDuration = 0;
+  myTama.desire = "";
+  myTama.evolutionPoints = 0;
+  myTama.sleeping = false;
+  myTama.mood = CONFIG.DEFAULT_SCORE;
   
-  showNotification('Score copié dans le presse-papier!');
+  // Make sure all overlays are hidden, especially game over
+  document.querySelectorAll('.overlay').forEach(overlay => {
+    overlay.classList.add('hidden');
+  });
+  
+  // Hide achievement displays
+  const achievementDisplay = document.querySelector('.js-achievement-display');
+  if (achievementDisplay) {
+    achievementDisplay.classList.add('hidden');
+  }
+  
+  // Reset UI
+  showInScreen(CONFIG.EVOLUTION_STAGES.EGG);
+  showInScreen("", true);
+  elements.vitals.classList.add("hidden");
+  elements.actions.classList.add("hidden");
+  
+  // Remove all effects
+  elements.displays.effects.innerHTML = '';
+  
+  // Reset any UI elements that might be displaying old values
+  updateVitals();
+  
+  // Reset achievements if the function exists
+  if (typeof resetAchievements === 'function') {
+    resetAchievements();
+  }
+  
+  // Re-initialize day/night cycle (but don't start it until birth)
+  initDayNightCycle();
+  
+  console.log('Game reset complete, myTama state:', {...myTama});
 };
 
 /* SAUVEGARDE ET CHARGEMENT */
@@ -753,52 +785,6 @@ const loadGame = () => {
   } else {
     showNotification("Aucune sauvegarde trouvée!", true);
   }
-};
-
-/* RESET GAME */
-const resetGame = () => {
-  // Reset all timers
-  clearTimeout(timeoutWaitForAction);
-  clearInterval(intervalLifeDuration);
-  
-  // Reset Tama state
-  myTama.name = "";
-  myTama.alive = false;
-  myTama.stage = CONFIG.EVOLUTION_STAGES.EGG;
-  myTama.fed = CONFIG.DEFAULT_SCORE;
-  myTama.playfull = CONFIG.DEFAULT_SCORE;
-  myTama.cleaned = CONFIG.DEFAULT_SCORE;
-  myTama.lifeDuration = 0;
-  myTama.desire = "";
-  myTama.evolutionPoints = 0;
-  myTama.sleeping = false;
-  myTama.mood = CONFIG.DEFAULT_SCORE;
-  
-  // Hide all overlays and notifications
-  elements.screens.gameOverScreen.classList.add('hidden');
-  elements.screens.startScreen.classList.add('hidden');
-  
-  const achievementDisplay = document.querySelector('.js-achievement-display');
-  if (achievementDisplay) {
-    achievementDisplay.classList.add('hidden');
-  }
-  
-  // Reset UI
-  showInScreen(CONFIG.EVOLUTION_STAGES.EGG);
-  showInScreen("", true);
-  elements.vitals.classList.add("hidden");
-  elements.actions.classList.add("hidden");
-  
-  // Remove all effects
-  elements.displays.effects.innerHTML = '';
-  
-  // Reset achievements if the function exists
-  if (typeof resetAchievements === 'function') {
-    resetAchievements();
-  }
-  
-  // Reset any UI elements that might be displaying old values
-  updateVitals();
 };
 
 /* HELPERS */

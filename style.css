@@ -119,6 +119,15 @@ body.night-mode {
     background-color: #2a76ef;
 }
 
+.overlay__button.warning {
+    background-color: #ff5555;
+    color: white;
+}
+
+.overlay__button.warning:hover {
+    background-color: #ff3333;
+}
+
 .overlay__options {
     margin-top: 20px;
     font-size: 1rem;
@@ -130,6 +139,19 @@ body.night-mode {
     background-color: rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     padding: 10px;
+}
+
+/* Fallback reset section */
+.fallback-reset {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.3);
+}
+
+.fallback-reset p {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    color: rgba(255, 255, 255, 0.8);
 }
 
 /* NOTIFICATION */
